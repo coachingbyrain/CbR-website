@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coaching by Rain — Career Coaching for Graduates</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --navy: #0D2150;
+      --sky: #5AACDF;
+      --white: #FFFFFF;
+      --navy-tint: #E6EDF8;
+      --navy-mid: #1C3A7A;
+      --charcoal: #2C2C2A;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--charcoal);
+      background: #fff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--navy-tint); }
+    ::-webkit-scrollbar-thumb { background: var(--sky); border-radius: 3px; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    nav.scrolled {
+      background: rgba(13, 33, 80, 0.97);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 24px rgba(13,33,80,0.3);
+    }
+
+    /* HERO */
+    .hero-bg {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 85% 35%, rgba(90,172,223,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 5% 85%, rgba(28,58,122,0.7) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Grain overlay */
+    .grain::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.5;
+      mix-blend-mode: overlay;
+    }
+
+    /* BUTTONS */
+    .btn-primary {
+      background: var(--sky);
+      color: var(--navy);
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      letter-spacing: 0.01em;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 8px 28px rgba(90,172,223,0.45);
+    }
+    .btn-primary:active { transform: translateY(0) scale(0.99); }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      letter-spacing: 0.01em;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-1px);
+    }
+
+    .btn-navy {
+      background: transparent;
+      color: var(--navy);
+      font-weight: 600;
+      padding: 13px 26px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid var(--navy);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .btn-navy:hover {
+      background: rgba(13,33,80,0.05);
+      transform: translateY(-1px);
+    }
+
+    /* EYEBROW */
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--sky);
+    }
+
+    /* SECTION HEADING */
+    .section-h {
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+    }
+
+    /* SERVICE CARDS */
+    .service-card {
+      background: #fff;
+      border: 1px solid rgba(13,33,80,0.1);
+      border-radius: 16px;
+      padding: 28px;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(90,172,223,0.06) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(13,33,80,0.12), 0 4px 12px rgba(13,33,80,0.07);
+      border-color: rgba(90,172,223,0.35);
+    }
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 50px; height: 50px;
+      background: var(--navy-tint);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+      color: var(--navy);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .service-card:hover .service-icon { background: var(--sky); color: #fff; }
+
+    /* STEP NUMBER */
+    .step-num {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--sky);
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 17px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(90,172,223,0.35);
+    }
+
+    /* PACKAGE CARDS */
+    .pkg-card {
+      background: #fff;
+      border: 1.5px solid rgba(13,33,80,0.1);
+      border-radius: 20px;
+      padding: 36px 30px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .pkg-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(13,33,80,0.1);
+    }
+    .pkg-card.featured {
+      background: var(--navy);
+      border-color: var(--navy);
+    }
+
+    /* TESTIMONIAL CARDS */
+    .testi-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(13,33,80,0.07), 0 1px 4px rgba(13,33,80,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .testi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(13,33,80,0.13);
+    }
+
+    /* FADE IN */
+    .fi {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fi.vis { opacity: 1; transform: translateY(0); }
+    .fi.d1 { transition-delay: 0.1s; }
+    .fi.d2 { transition-delay: 0.2s; }
+    .fi.d3 { transition-delay: 0.3s; }
+
+    /* BADGE PILL */
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      letter-spacing: 0.04em;
+      display: inline-block;
+    }
+
+    /* LIVE DOT */
+    .live-dot {
+      position: relative;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+    }
+    .live-dot::before {
+      content: '';
+      position: absolute; inset: -3px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s ease-out infinite;
+    }
+    .live-dot.amber { background: #f59e0b; }
+    .live-dot.amber::before { background: #f59e0b; }
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+
+    /* EXTRAS TABLE */
+    .extra-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(13,33,80,0.07);
+      gap: 16px;
+    }
+    .extra-row:last-child { border-bottom: none; }
+
+    /* CHECK ICON SVG inline */
+    .check-icon { flex-shrink: 0; }
+
+    @media (max-width: 768px) {
+      .hide-mobile { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ NAVIGATION ═══════════════════ -->
+<nav id="navbar" class="py-4 px-6 md:px-12">
+  <div class="max-w-6xl mx-auto flex items-center justify-between">
+    <a href="#">
+      <img src="brand_assets/CbR Logo.png" alt="Coaching by Rain" class="h-40 brightness-0 invert">
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#how-it-works" class="text-white/70 hover:text-white text-sm font-medium transition-colors">How it works</a>
+      <a href="#packages" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Packages</a>
+      <a href="#testimonials" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Testimonials</a>
+      <a href="#about" class="text-white/70 hover:text-white text-sm font-medium transition-colors">About</a>
+    </div>
+    <a href="https://calendly.com/rain-coachingbyrain/30min" target="_blank" rel="noopener" class="btn-primary text-sm py-3 px-5">
+      Book a session
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero-bg grain relative min-h-screen flex items-center pt-20">
+  <div class="max-w-6xl mx-auto px-6 md:px-12 w-full py-20 md:py-28">
+    <div class="grid md:grid-cols-2 gap-14 items-center">
+
+      <!-- Left -->
+      <div>
+        <div class="flex flex-wrap items-center gap-5 mb-8">
+          <div class="flex items-center gap-2">
+            <div class="live-dot"></div>
+            <span class="text-xs font-semibold tracking-wide uppercase" style="color:#4ade80">Now taking bookings · Australia</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="live-dot amber"></div>
+            <span class="text-xs font-semibold tracking-wide uppercase" style="color:#f59e0b">Enquiry only · Canada</span>
+          </div>
+        </div>
+
+        <h1 class="text-5xl md:text-6xl lg:text-[68px] font-extrabold text-white leading-[1.04] tracking-tight mb-6">
+          Land your<br>first role<br>
+          <span style="color:var(--sky)">with confidence.</span>
+        </h1>
+
+        <p class="text-white/65 text-lg leading-[1.75] mb-10 max-w-[440px]">
+          Working with candidates across all sectors and career stages to support their journey. Specialising in early career recruitment for new graduates and those ready to take their next step.
+        </p>
+
+        <div class="flex flex-wrap gap-3 mb-12">
+          <a href="https://calendly.com/rain-coachingbyrain/30min" target="_blank" rel="noopener" class="btn-primary">Book a session →</a>
+          <a href="#how-it-works" class="btn-outline">How it works</a>
+        </div>
+
+        <!-- Stats -->
+        <div class="flex flex-wrap items-center gap-8 pt-10 border-t border-white/10">
+          <div>
+            <div class="text-3xl font-extrabold text-white tracking-tight">100+</div>
+            <div class="text-white/45 text-xs font-medium mt-0.5">Coached Globally</div>
+          </div>
+          <div class="w-px h-9 bg-white/15"></div>
+          <div>
+            <div class="text-3xl font-extrabold tracking-tight" style="color:var(--sky)">90%</div>
+            <div class="text-white/45 text-xs font-medium mt-0.5">Land roles within 3 months</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right visual -->
+      <div class="relative hide-mobile">
+        <div class="relative rounded-2xl overflow-hidden" style="border:1px solid rgba(90,172,223,0.2)">
+          <img src="brand_assets/rain-headshot.jpg" alt="Rain - Career Coach" class="w-full object-cover" style="opacity:0.75; mix-blend-mode:luminosity;">
+          <div class="absolute inset-0" style="background:linear-gradient(to top, var(--navy) 0%, transparent 55%);"></div>
+
+          <!-- Floating success card -->
+          <div class="absolute bottom-6 left-5 right-5">
+            <div class="rounded-xl p-4" style="background:rgba(13,33,80,0.92); border:1px solid rgba(90,172,223,0.2); backdrop-filter:blur(16px);">
+              <div class="flex items-start gap-3">
+                <div class="w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center" style="background:var(--sky);">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="2.5"><path d="M4 10l4 4 8-8"/></svg>
+                </div>
+                <div>
+                  <div class="text-white text-sm font-semibold leading-snug">Sarah just landed her first role!</div>
+                  <div class="text-white/45 text-xs mt-0.5">Management Consultant · 3 weeks after coaching</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Glow decorations -->
+        <div class="absolute -top-8 -right-8 w-36 h-36 rounded-full pointer-events-none" style="background:var(--sky); opacity:0.15; filter:blur(48px);"></div>
+        <div class="absolute -bottom-10 -left-10 w-44 h-44 rounded-full pointer-events-none" style="background:var(--sky); opacity:0.08; filter:blur(64px);"></div>
+
+        <!-- Experience badge -->
+        <div class="absolute top-6 -right-5 rounded-xl px-4 py-3 shadow-xl" style="background:var(--navy-mid);">
+          <div class="text-2xl font-extrabold text-white leading-none">10+</div>
+          <div class="text-xs font-medium mt-0.5" style="color:var(--sky)">Years experience</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wave divider -->
+  <div class="absolute bottom-0 left-0 right-0 pointer-events-none">
+    <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;">
+      <path d="M0 56L1440 56L1440 20C1200 56 720 0 0 38V56Z" fill="white"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══════════════════ SERVICES ═══════════════════ -->
+<section id="services" class="py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="text-center mb-14">
+      <span class="eyebrow">What we offer</span>
+      <h2 class="section-h mt-3">Everything you need to<br><span style="color:var(--sky)">land the job</span></h2>
+      <p class="text-gray-500 mt-4 max-w-lg mx-auto text-[15px] leading-relaxed">From polishing your resume to nailing the interview. Every step of your job search, covered.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="service-card fi">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3 class="font-bold text-[17px] mb-2" style="color:var(--navy)">Resume & Cover Letter</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">An Applicant Tracking System (ATS) optimised resume that gets you through the first door, plus a cover letter that sounds like you.</p>
+      </div>
+
+      <div class="service-card fi d1">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3 class="font-bold text-[17px] mb-2" style="color:var(--navy)">Interview Preparation</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Live mock interviews with detailed feedback. Build real confidence before the actual thing.</p>
+      </div>
+
+      <div class="service-card fi d2">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </div>
+        <h3 class="font-bold text-[17px] mb-2" style="color:var(--navy)">LinkedIn Optimisation</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">A profile that attracts recruiters and positions you as a standout candidate.</p>
+      </div>
+
+      <div class="service-card fi d3">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3 class="font-bold text-[17px] mb-2" style="color:var(--navy)">Career Strategy</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Clarity on what you want and a clear action plan to get there. No more applying blindly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
+<section id="how-it-works" class="py-24" style="background:var(--navy-tint);">
+  <div class="max-w-5xl mx-auto px-6 md:px-12">
+    <div class="text-center mb-16">
+      <span class="eyebrow">The process</span>
+      <h2 class="section-h mt-3">Three steps to<br><span style="color:var(--sky)">your first offer</span></h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="text-center fi">
+        <div class="step-num mx-auto mb-6">1</div>
+        <h3 class="text-lg font-bold mb-3" style="color:var(--navy)">Book a free discovery call</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Tell me where you're at and where you want to be. We'll map out a game plan, no commitment required.</p>
+      </div>
+      <div class="text-center fi d1">
+        <div class="step-num mx-auto mb-6">2</div>
+        <h3 class="text-lg font-bold mb-3" style="color:var(--navy)">Work through your sessions</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Focused 1-on-1 sessions tailored to your goals. We polish your materials, prep your pitch, build your confidence.</p>
+      </div>
+      <div class="text-center fi d2">
+        <div class="step-num mx-auto mb-6">3</div>
+        <h3 class="text-lg font-bold mb-3" style="color:var(--navy)">Land the role</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Walk into interviews ready. Get the offer. Start the career you've been working towards.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PACKAGES ═══════════════════ -->
+<section id="packages" class="py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="text-center mb-14">
+      <span class="eyebrow">Pricing</span>
+      <h2 class="section-h mt-3">Choose your <span style="color:var(--sky)">package</span></h2>
+      <p class="text-gray-500 mt-4 max-w-md mx-auto text-[15px]">Tailored support for wherever you are in your journey. All prices include GST.</p>
+    </div>
+
+    <!-- Core packages label -->
+    <div class="flex items-center gap-4 mb-6">
+      <span class="text-xs font-700 tracking-[0.12em] uppercase font-bold" style="color:var(--navy)">Core packages</span>
+      <div class="flex-1 h-px" style="background:rgba(13,33,80,0.1)"></div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 items-stretch mb-14">
+
+      <!-- Option 01 — Career Essentials -->
+      <div class="pkg-card fi">
+        <div class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:var(--sky)">Option 01</div>
+        <h3 class="text-xl font-bold mb-2" style="color:var(--navy)">Career Essentials</h3>
+        <div class="flex items-end gap-1 mb-4">
+          <span class="text-[13px] font-semibold mb-1.5" style="color:var(--navy)">A</span>
+          <span class="text-4xl font-extrabold" style="color:var(--navy)">$399</span>
+          <span class="text-gray-400 text-xs mb-1.5 ml-0.5">incl. GST</span>
+        </div>
+        <p class="text-gray-500 text-sm leading-relaxed mb-6">Build the foundation: a standout LinkedIn profile, resume, and cover letter that opens doors.</p>
+        <ul class="space-y-2.5 mb-8 flex-1">
+          <li class="flex items-center gap-2.5 text-sm text-gray-600">
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#E6EDF8"/><path d="M5 8l2 2 4-4" stroke="#0D2150" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            LinkedIn review
+          </li>
+          <li class="flex items-center gap-2.5 text-sm text-gray-600">
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#E6EDF8"/><path d="M5 8l2 2 4-4" stroke="#0D2150" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Resume review
+          </li>
+          <li class="flex items-center gap-2.5 text-sm text-gray-600">
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#E6EDF8"/><path d="M5 8l2 2 4-4" stroke="#0D2150" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            A tailored cover letter for your desired role
+          </li>
+        </ul>
+        <a href="https://calendly.com/rain-coachingbyrain/30min" target="_blank" rel="noopener" class="btn-navy mt-auto text-center justify-center">Book a call →</a>
+      </div>
+
+      <!-- Option 02 — Interview Ready (Featured) -->
+      <div class="pkg-card featured fi d1 relative">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+          <span class="badge px-5 py-1.5" style="background:var(--sky); color:var(--navy);">Most popular</span>
+        </div>
+        <div class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:var(--sky)">Option 02</div>
+        <h3 class="text-xl font-bold mb-2 text-white">Interview Ready</h3>
+        <div class="flex items-end gap-1 mb-4">
+          <span class="text-[13px] font-semibold mb-1.5 text-white/70">A</span>
+          <span class="text-4xl font-extrabold text-white">$599</span>
+          <span class="text-white/40 text-xs mb-1.5 ml-0.5">incl. GST</span>
+        </div>
+        <p class="text-white/60 text-sm leading-relaxed mb-6">Everything in Option 1, plus in-depth interview coaching so you walk in ready to impress.</p>
+        <ul class="space-y-2.5 mb-8 flex-1">
+          <li class="flex items-center gap-2.5 text-sm text-white/80">
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(90,172,223,0.2)"/><path d="M5 8l2 2 4-4" stroke="#5AACDF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Everything in Option 1
+          </li>
+          <li class="flex items-center gap-2.5 text-sm text-white/80">
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(90,172,223,0.2)"/><path d="M5 8l2 2 4-4" stroke="#5AACDF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Interview preparation
+          </li>
+          <li class="flex items-center gap-2.5 text-sm text-white/80">
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(90,172,223,0.2)"/><path d="M5 8l2 2 4-4" stroke="#5AACDF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Mock interview
+          </li>
+        </ul>
+        <a href="https://calendly.com/rain-coachingbyrain/30min" target="_blank" rel="noopener" class="btn-primary mt-auto text-center justify-center">Book a call →</a>
+      </div>
+
+      <!-- Option 03 — Setup for Success -->
+      <div class="pkg-card fi d2">
+        <div class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:var(--sky)">Option 03</div>
+        <h3 class="text-xl font-bold mb-2" style="color:var(--navy)">Setup for Success</h3>
+        <div class="flex items-end gap-1 mb-4">
+          <span class="text-[13px] font-semibold mb-1.5" style="color:var(--navy)">A</span>
+          <span class="text-4xl font-extrabold" style="color:var(--navy)">$999</span>
+          <span class="text-gray-400 text-xs mb-1.5 ml-0.5">incl. GST</span>
+        </div>
+        <p class="text-gray-500 text-sm leading-relaxed mb-6">Everything in Options 1 and 2, plus ongoing support to help you thrive in your first six months.</p>
+        <ul class="space-y-2.5 mb-8 flex-1">
+          <li class="flex items-center gap-2.5 text-sm text-gray-600">
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#E6EDF8"/><path d="M5 8l2 2 4-4" stroke="#0D2150" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Everything in Options 1 and 2
+          </li>
+          <li class="flex items-start gap-2.5 text-sm text-gray-600">
+            <svg class="check-icon mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#E6EDF8"/><path d="M5 8l2 2 4-4" stroke="#0D2150" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Six 30-minute monthly check-ins after commencement
+          </li>
+          <li class="flex items-start gap-2.5 text-sm text-gray-600">
+            <svg class="check-icon mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#E6EDF8"/><path d="M5 8l2 2 4-4" stroke="#0D2150" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Ongoing support to make the most of your first six months, including Networking Masterclass
+          </li>
+          <li class="flex items-start gap-2.5 text-sm text-gray-600">
+            <svg class="check-icon mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#E6EDF8"/><path d="M5 8l2 2 4-4" stroke="#0D2150" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Guidance to take full advantage of opportunities in the role
+          </li>
+        </ul>
+        <a href="https://calendly.com/rain-coachingbyrain/30min" target="_blank" rel="noopener" class="btn-navy mt-auto text-center justify-center">Book a call →</a>
+      </div>
+    </div>
+
+    <!-- Optional extras -->
+    <div class="flex items-center gap-4 mb-6">
+      <span class="text-xs tracking-[0.12em] uppercase font-bold" style="color:var(--navy)">Optional extras</span>
+      <div class="flex-1 h-px" style="background:rgba(13,33,80,0.1)"></div>
+    </div>
+
+    <div class="rounded-2xl overflow-hidden fi" style="border:1.5px solid rgba(13,33,80,0.09);">
+      <div class="extra-row px-6" style="background:var(--navy-tint);">
+        <div>
+          <div class="font-semibold text-sm" style="color:var(--navy)">Networking Masterclass</div>
+          <div class="text-gray-500 text-xs mt-0.5">Also included in Option 03</div>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="font-extrabold text-lg" style="color:var(--navy)">A$299</div>
+          <div class="text-gray-400 text-xs">incl. GST</div>
+        </div>
+      </div>
+      <div class="extra-row px-6 bg-white">
+        <div>
+          <div class="font-semibold text-sm" style="color:var(--navy)">Interview prep & mock interview only</div>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="font-extrabold text-lg" style="color:var(--navy)">A$249</div>
+          <div class="text-gray-400 text-xs">incl. GST</div>
+        </div>
+      </div>
+      <div class="extra-row px-6" style="background:var(--navy-tint);">
+        <div>
+          <div class="font-semibold text-sm" style="color:var(--navy)">Career exploration session</div>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="font-extrabold text-lg" style="color:var(--navy)">A$199</div>
+          <div class="text-gray-400 text-xs">incl. GST</div>
+        </div>
+      </div>
+      <div class="extra-row px-6 bg-white">
+        <div>
+          <div class="font-semibold text-sm" style="color:var(--navy)">Group & corporate speaking</div>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <a href="mailto:info@coachingbyrain.com" class="text-sm font-semibold underline underline-offset-2 transition-colors hover:opacity-70" style="color:var(--sky)">Enquire via email</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-center text-gray-400 text-sm mt-8">
+      Not sure where to start? <a href="https://calendly.com/rain-coachingbyrain/30min" target="_blank" rel="noopener" style="color:var(--sky)" class="underline underline-offset-2">Book a free 15-min call</a> and we'll figure it out together.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════ TESTIMONIALS ═══════════════════ -->
+<section id="testimonials" class="py-24" style="background:var(--navy-tint);">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="text-center mb-14">
+      <span class="eyebrow">Success stories</span>
+      <h2 class="section-h mt-3">Graduates who<br><span style="color:var(--sky)">made it happen</span></h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="testi-card fi">
+        <div class="flex gap-0.5 mb-4">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+        </div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-6">"I was applying for months with zero callbacks. After working with Rain on my resume and doing mock interviews, I had 3 offers in 6 weeks. I genuinely couldn't believe it."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://placehold.co/40x40/5AACDF/ffffff?text=SL" alt="Sarah L." class="rounded-full w-10 h-10">
+          <div>
+            <div class="font-semibold text-sm" style="color:var(--navy)">Sarah L.</div>
+            <div class="text-gray-400 text-xs">Consulting Graduate · Sydney</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card fi d1">
+        <div class="flex gap-0.5 mb-4">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+        </div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-6">"The mock interviews were game-changing. I walked into my final round feeling so prepared. Rain's feedback helped me tell my story clearly and confidently."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://placehold.co/40x40/0D2150/ffffff?text=JT" alt="James T." class="rounded-full w-10 h-10">
+          <div>
+            <div class="font-semibold text-sm" style="color:var(--navy)">James T.</div>
+            <div class="text-gray-400 text-xs">Finance Graduate · Toronto</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card fi d2">
+        <div class="flex gap-0.5 mb-4">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="#5AACDF"><path d="M8 1l1.96 3.97 4.38.64-3.17 3.09.75 4.37L8 11.03l-3.92 2.04.75-4.37L1.66 5.61l4.38-.64L8 1z"/></svg>
+        </div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-6">"I had zero work experience and no idea how to market myself. Rain reframed everything. He showed me the value I already had, and landed a role within one of the Big 4!"</p>
+        <div class="flex items-center gap-3">
+          <img src="https://placehold.co/40x40/1C3A7A/ffffff?text=MK" alt="Mia K." class="rounded-full w-10 h-10">
+          <div>
+            <div class="font-semibold text-sm" style="color:var(--navy)">Mia K.</div>
+            <div class="text-gray-400 text-xs">Accounting Graduate · Auckland</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ABOUT ═══════════════════ -->
+<section id="about" class="py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <!-- Image -->
+      <div class="relative">
+        <div class="rounded-2xl overflow-hidden aspect-[4/5]">
+          <img src="brand_assets/rain-headshot.jpg" alt="Rain - Career Coach" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute -bottom-5 -right-5 w-44 h-44 rounded-2xl -z-10" style="background:var(--navy-tint);"></div>
+        <div class="absolute top-6 -right-4 rounded-xl px-4 py-3 shadow-xl" style="background:var(--navy);">
+          <div class="text-2xl font-extrabold text-white leading-none">10+</div>
+          <div class="text-xs font-semibold mt-0.5" style="color:var(--sky)">Years experience</div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="fi">
+        <span class="eyebrow">About Rain</span>
+        <h2 class="section-h mt-3 mb-6">Hi, I'm Rain.<br>Your career coach.</h2>
+        <p class="text-gray-600 leading-[1.8] mb-4 text-[15px]">I've spent years working in consulting, and I kept seeing the same problem: incredible graduates being overlooked because they didn't know how to communicate their value.</p>
+        <p class="text-gray-600 leading-[1.8] mb-4 text-[15px]">That's why I started Coaching by Rain. I work closely with high school and university graduates to help them put their best foot forward, with confidence, not guesswork. I've had the privilege of working with people from Australia, Canada, New Zealand, the UK, and the USA to help them land their dream role.</p>
+        <p class="text-gray-600 leading-[1.8] mb-8 text-[15px]">My approach is warm, practical, and always tailored to you. I'm in your corner from the first session to the offer call.</p>
+
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="badge py-2 px-4 text-xs" style="background:var(--navy-tint); color:var(--navy)">Career Coaching</span>
+          <span class="badge py-2 px-4 text-xs" style="background:var(--navy-tint); color:var(--navy)">Recruitment</span>
+          <span class="badge py-2 px-4 text-xs" style="background:var(--navy-tint); color:var(--navy)">Interview Training</span>
+          <span class="badge py-2 px-4 text-xs" style="background:var(--navy-tint); color:var(--navy)">Consulting</span>
+          <span class="badge py-2 px-4 text-xs" style="background:var(--navy-tint); color:var(--navy)">Information Technology</span>
+        </div>
+
+        <a href="https://calendly.com/rain-coachingbyrain/30min" target="_blank" rel="noopener" class="btn-primary">Work with me →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CTA BANNER ═══════════════════ -->
+<section class="py-24 relative overflow-hidden" style="background:var(--navy);">
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 70% 80% at 80% 50%, rgba(90,172,223,0.15) 0%, transparent 70%);"></div>
+  <div class="max-w-3xl mx-auto px-6 md:px-12 text-center relative">
+    <span class="eyebrow mb-4 block">Ready to start?</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight tracking-tight">
+      Your first role is<br>closer than you think.
+    </h2>
+    <p class="text-white/60 text-lg mb-10 leading-relaxed">Join graduates globally who've turned their job search around with Coaching by Rain.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="https://calendly.com/rain-coachingbyrain/30min" target="_blank" rel="noopener" class="btn-primary text-base">Book a session →</a>
+      <a href="#packages" class="btn-outline text-base">View packages</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="py-14" style="background:var(--charcoal);">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="grid md:grid-cols-4 gap-10 mb-12">
+      <div class="md:col-span-2">
+        <img src="brand_assets/CbR Logo.png" alt="Coaching by Rain" class="h-40 brightness-0 invert mb-5">
+        <img src="brand_assets/SPCC_Logo.png" alt="SPCC Certified - Senior Professional Career Coach" class="w-32 h-auto mt-1 mb-2">
+        <p class="text-gray-600 text-xs mt-2">Australia & Canada · coachingbyrain.com</p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white text-sm mb-4">Navigate</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#how-it-works" class="text-gray-400 hover:text-white text-sm transition-colors">How it works</a></li>
+          <li><a href="#packages" class="text-gray-400 hover:text-white text-sm transition-colors">Packages</a></li>
+          <li><a href="#about" class="text-gray-400 hover:text-white text-sm transition-colors">About Rain</a></li>
+          <li><a href="#testimonials" class="text-gray-400 hover:text-white text-sm transition-colors">Testimonials</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white text-sm mb-4">Get in touch</h4>
+        <ul class="space-y-2.5">
+          <li><a href="mailto:info@coachingbyrain.com" class="text-gray-400 hover:text-white text-sm transition-colors">info@coachingbyrain.com</a></li>
+          <li><a href="https://calendly.com/rain-coachingbyrain/30min" target="_blank" rel="noopener" class="text-gray-400 hover:text-white text-sm transition-colors">Book a free call</a></li>
+        </ul>
+        <div class="flex gap-2.5 mt-5">
+          <a href="https://www.linkedin.com/company/coachingbyrain/" target="_blank" rel="noopener" class="w-8 h-8 rounded-full flex items-center justify-center transition-colors" style="background:rgba(255,255,255,0.08);" onmouseover="this.style.background='rgba(90,172,223,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2" fill="white"/></svg>
+          </a>
+          <a href="https://www.instagram.com/coachingbyrain" target="_blank" rel="noopener" class="w-8 h-8 rounded-full flex items-center justify-center transition-colors" style="background:rgba(255,255,255,0.08);" onmouseover="this.style.background='rgba(90,172,223,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="white"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-3">
+      <p class="text-gray-500 text-xs">© 2026 Coaching by Rain. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Fade-in on scroll
+  const fis = document.querySelectorAll('.fi');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+  fis.forEach(el => io.observe(el));
+
+  // Fallback: reveal all after 400ms (also helps headless/print rendering)
+  setTimeout(() => fis.forEach(el => el.classList.add('vis')), 400);
+</script>
+</body>
+</html>
